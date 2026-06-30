@@ -60,7 +60,8 @@ export const registerUser = async (req, res) => {
         console.error(err);
         res.status(500).json({
             success: false,
-            message: "Server Error"
+            message: "Internal Server Error",
+            error: err.message
         });
     }
 }
