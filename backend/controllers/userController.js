@@ -47,7 +47,7 @@ export const registerUser = async (req, res) => {
             const token = createAccessToken(user._id);
             const refreshToken = createRefreshToken(user._id);
             
-            const isProd = process.env.NODE_ENV === 'production';
+            const isProd = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
             res.cookie('token', token, { httpOnly: true, secure: isProd, sameSite: isProd ? 'none' : 'strict', maxAge: 15 * 60 * 1000 });
             res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: isProd, sameSite: isProd ? 'none' : 'strict', maxAge: 7 * 24 * 60 * 60 * 1000 });
             
@@ -97,7 +97,7 @@ export async function loginUser(req,res){
         const token = createAccessToken(user._id);
         const refreshToken = createRefreshToken(user._id);
 
-        const isProd = process.env.NODE_ENV === 'production';
+        const isProd = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
         res.cookie('token', token, { httpOnly: true, secure: isProd, sameSite: isProd ? 'none' : 'strict', maxAge: 15 * 60 * 1000 });
         res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: isProd, sameSite: isProd ? 'none' : 'strict', maxAge: 7 * 24 * 60 * 60 * 1000 });
 
@@ -245,7 +245,7 @@ export async function updateProfile(req, res){
             return res.status(401).json({ success: false, message: "User not found" });
         }
         const newToken = createAccessToken(user._id);
-        const isProd = process.env.NODE_ENV === 'production';
+        const isProd = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
         res.cookie('token', newToken, { httpOnly: true, secure: isProd, sameSite: isProd ? 'none' : 'strict', maxAge: 15 * 60 * 1000 });
         res.json({
             success: true
@@ -258,7 +258,7 @@ export async function updateProfile(req, res){
 
 
 export async function logoutUser(req, res) {
-    const isProd = process.env.NODE_ENV === 'production';
+    const isProd = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
     res.clearCookie('token', { httpOnly: true, secure: isProd, sameSite: isProd ? 'none' : 'strict' });
     res.clearCookie('refreshToken', { httpOnly: true, secure: isProd, sameSite: isProd ? 'none' : 'strict' });
     res.json({ success: true, message: 'Logged out successfully' });
