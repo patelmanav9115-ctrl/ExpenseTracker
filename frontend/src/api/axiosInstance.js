@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Use the environment variable if it exists, otherwise default to local backend
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+// Use the environment variable if it exists, otherwise use the live Render backend
+const API_URL = import.meta.env.VITE_API_URL || 'https://expense-tracker-api-m8dv.onrender.com';
 
 const axiosInstance = axios.create({
   baseURL: `${API_URL}/api`,
