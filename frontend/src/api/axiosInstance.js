@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+// Use the environment variable if it exists, otherwise default to local backend
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
 const axiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: `${API_URL}/api`,
   withCredentials: true, // Send cookies automatically
 });
 
@@ -41,7 +44,7 @@ axiosInstance.interceptors.response.use(
         isRefreshing = true;
 
         return new Promise(function(resolve, reject) {
-          axios.post('http://localhost:4000/api/users/refresh', {}, { withCredentials: true })
+          axios.post(`${API_URL}/api/users/refresh`, {}, { withCredentials: true })
             .then(() => {
               // The backend will set the new token as an HttpOnly cookie
               processQueue(null, null);
