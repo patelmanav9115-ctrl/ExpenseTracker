@@ -18,6 +18,9 @@ import goalRouter from './routes/goalRoute.js';
 const app = express();
 const port = process.env.PORT || 4000;
 
+// Trust proxies (Render / Cloudflare) so rate limiters track real user IPs
+app.set('trust proxy', 1);
+
 // MIDDLEWARES
 app.use(helmet());
 app.use(cors({ origin: ['http://localhost:5173', 'https://expense-tracker-bell.vercel.app'], credentials: true }));
@@ -35,7 +38,7 @@ app.use('/api', limiter);
 
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // Limit each IP to 5 login requests per windowMs
+    max: 50, // Increased to 50 to prevent blocking during active testing
     message: 'Too many login attempts from this IP, please try again after 15 minutes.'
 });
 app.use('/api/users/login', authLimiter);
